@@ -1,13 +1,15 @@
 class TransactionModel {
+  int id;
   String name;
   String value;
-  String category;
+  Category category;
   int parcels;
   String totalValue;
   String dataOperacao;
 
   TransactionModel(
-      {this.name,
+      {this.id,
+        this.name,
         this.value,
         this.category,
         this.parcels,
@@ -15,9 +17,12 @@ class TransactionModel {
         this.dataOperacao});
 
   TransactionModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     value = json['value'];
-    category = json['category'];
+    category = json['category'] != null
+        ? new Category.fromJson(json['category'])
+        : null;
     parcels = json['parcels'];
     totalValue = json['totalValue'];
     dataOperacao = json['dataOperacao'];
@@ -25,12 +30,34 @@ class TransactionModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
     data['value'] = this.value;
-    data['category'] = this.category;
+    if (this.category != null) {
+      data['category'] = this.category.toJson();
+    }
     data['parcels'] = this.parcels;
     data['totalValue'] = this.totalValue;
     data['dataOperacao'] = this.dataOperacao;
+    return data;
+  }
+}
+
+class Category {
+  int id;
+  String name;
+
+  Category({this.id, this.name});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     return data;
   }
 }
