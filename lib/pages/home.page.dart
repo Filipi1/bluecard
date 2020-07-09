@@ -101,7 +101,7 @@ class BoxInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.center,
       height: 220,
       decoration: BoxDecoration(
           gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
@@ -111,7 +111,7 @@ class BoxInfo extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("FATURA ABERTA", style: TextStyle(color: Colors.white.withAlpha(90), fontWeight: FontWeight.bold, fontSize: 22) ),

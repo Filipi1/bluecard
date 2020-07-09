@@ -1,3 +1,4 @@
+import 'package:creditcard/pages/auth.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class CardApp extends StatelessWidget {
         primaryColor: Color(0xFF0066FF),
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: AuthPage(),
     );
   }
 }
