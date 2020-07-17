@@ -6,12 +6,13 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Container(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(child: Image.asset("images/logo.png")),
+            Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -25,6 +26,7 @@ class AuthPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+
                     Row(
                       children: <Widget>[
                         PersonalInput(title: "000000", width: MediaQuery.of(context).size.width / 2.5, maxLength: 6),
@@ -37,14 +39,16 @@ class AuthPage extends StatelessWidget {
                     ),
                     SizedBox(height: 20),
                     PersonalInput(title: "••••••", isPassword: true),
-                    SizedBox(height: 20),
-                    RaisedButton(child: Text("Entrar"), onPressed: () {}),
+                    SizedBox(height: 40),
+                    Container(height: 45, width: MediaQuery.of(context).size.width, child: RaisedButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)), elevation: 0, color: Theme.of(context).primaryColor, textColor: Colors.white, child: Text("Entrar", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),), onPressed: () {})),
+                    SizedBox(height: 15),
+                    Center(child: Text("Esqueceu sua senha?"))
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -73,7 +77,7 @@ class PersonalInput extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: TextFormField(
-          decoration: InputDecoration.collapsed(hintText: title),
+          decoration: InputDecoration(hintText: title, counterText: '', border: InputBorder.none),
           keyboardType: TextInputType.number,
           obscureText: isPassword,
           maxLength: maxLength == 0 ? null : maxLength,
