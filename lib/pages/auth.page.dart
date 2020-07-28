@@ -1,8 +1,30 @@
+import 'package:creditcard/controllers/auth.controller.dart';
+import 'package:creditcard/models/auth-response.model.dart';
+import 'package:creditcard/models/auth.model.dart';
+import 'package:creditcard/widgets/personal-input.widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
+
+  @override
+  _AuthPageState createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
+  AnimationController _loginButtonController;
+  Animation<double> _loginButtonTween;
+
+  AuthController _authController = new AuthController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loginButtonController = new AnimationController(duration: Duration(seconds: 2), vsync: this);
+    _loginButtonTween = new Tween(begin: 200.0, end: 40.0).animate(new CurvedAnimation(parent: _loginButtonController, curve: Interval(0, 0.25)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,21 +48,45 @@ class AuthPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
-                    Row(
-                      children: <Widget>[
-                        PersonalInput(title: "000000", width: MediaQuery.of(context).size.width / 2.5, maxLength: 6),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
-                          child: Text("-", style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 30),),
-                        ),
-                        PersonalInput(title: "00", width: MediaQuery.of(context).size.width / 3.5, maxLength: 2),
-                      ],
-                    ),
+                    PersonalInput(title: "CPF"),
                     SizedBox(height: 20),
-                    PersonalInput(title: "••••••", isPassword: true),
+                    PersonalInput(title: "Senha", isPassword: true),
                     SizedBox(height: 40),
-                    Container(height: 45, width: MediaQuery.of(context).size.width, child: RaisedButton(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)), elevation: 0, color: Theme.of(context).primaryColor, textColor: Colors.white, child: Text("Entrar", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),), onPressed: () {})),
+                    AnimatedBuilder(
+                      animation: _loginButtonController,
+                      builder: (BuildContext context, child) {
+                        return Center(
+                          child: Container(
+                              height: 45,
+                              width: _loginButtonTween.value,
+                              child: RaisedButton(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                                  elevation: 0,
+                                  color: Theme.of(context).primaryColor,
+                                  textColor: Colors.white,
+
+                                  child: _loginButtonTween.value > 180.0 ? Text(
+                                    "Entrar",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold, fontSize: 22),
+                                  ) : Container(width: 15, height: 15, child: CircularProgressIndicator()),
+                                  onPressed: () {
+                                    _loginButtonController.forward();
+
+                                    AuthModel model = new AuthModel(cpf: "07848467317", password: "12345678");
+
+                                    _authController.signIn(model).then((AuthResponseModel res) {
+                                      print(res.user.name);
+                                      _loginButtonController.reverse();
+                                    }, onError: (e) {
+                                      print(e);
+                                      _loginButtonController.reverse();
+                                    });
+                                  })
+                          ),
+                        );
+                      },
+                    ),
                     SizedBox(height: 15),
                     Center(child: Text("Esqueceu sua senha?"))
                   ],
@@ -52,41 +98,11 @@ class AuthPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class PersonalInput extends StatelessWidget {
-  bool isPassword;
-  String title;
-  double width;
-  int maxLength;
-
-  PersonalInput({this.title = "", this.isPassword = false, this.width = 0, this.maxLength = 0});
 
   @override
-  Widget build(BuildContext context) {
-
-    if (width == 0)
-      width = MediaQuery.of(context).size.width;
-
-    return Container(
-      width: width,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 10)]),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: TextFormField(
-          decoration: InputDecoration(hintText: title, counterText: '', border: InputBorder.none),
-          keyboardType: TextInputType.number,
-          obscureText: isPassword,
-          maxLength: maxLength == 0 ? null : maxLength,
-          style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor),
-        ),
-      ),
-    );
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _loginButtonController.dispose();
   }
 }
