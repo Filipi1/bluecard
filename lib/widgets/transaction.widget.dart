@@ -68,15 +68,16 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: (transactions.length * 120).toDouble(),
-      child: ListView.separated(
+
+      child: ListView.builder(
         physics: ScrollPhysics(),
         itemBuilder: (_, index) => TransactionTile(
-            title: transactions[index].name,
-            dateTime: transactions[index].dataOperacao,
-            value: transactions[index].value,
-            parcels: transactions[index].parcels),
+            title: transactions[index]?.name,
+            value: transactions[index]?.value,
+            dateTime: transactions[index].operationDate != null ? transactions[index].operationDate : "Não Computado",
+            parcels: transactions[index]?.parcels
+        ),
         itemCount: transactions.length,
-        separatorBuilder: (c, _) => Divider(),
       ),
     );
   }

@@ -5,7 +5,7 @@ class TransactionModel {
   Category category;
   int parcels;
   String totalValue;
-  String dataOperacao;
+  String operationDate;
 
   TransactionModel(
       {this.id,
@@ -14,7 +14,7 @@ class TransactionModel {
         this.category,
         this.parcels,
         this.totalValue,
-        this.dataOperacao});
+        this.operationDate});
 
   TransactionModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,7 +25,7 @@ class TransactionModel {
         : null;
     parcels = json['parcels'];
     totalValue = json['totalValue'];
-    dataOperacao = json['dataOperacao'];
+    operationDate = json['operationDate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +38,7 @@ class TransactionModel {
     }
     data['parcels'] = this.parcels;
     data['totalValue'] = this.totalValue;
-    data['dataOperacao'] = this.dataOperacao;
+    data['operationDate'] = this.operationDate;
     return data;
   }
 }

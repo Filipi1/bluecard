@@ -1,4 +1,4 @@
-import 'package:creditcard/controllers/log.controller.dart';
+import 'package:creditcard/controllers/transaction.controller.dart';
 import 'package:creditcard/models/transaction.model.dart';
 import 'package:creditcard/widgets/square-menu.widget.dart';
 import 'package:creditcard/widgets/transaction.widget.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LogController logController = new LogController();
+    TransactionController transactionController = new TransactionController();
 
     return Scaffold(
       body: SafeArea(child: SingleChildScrollView(
@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
               ),
 
               FutureBuilder(
-                future: logController.obter(),
+                future: transactionController.ListTransactions("07848467317"),
                 builder: (BuildContext context, AsyncSnapshot transactions) {
 
                   if(transactions.hasData) {
@@ -83,7 +83,6 @@ class HomePage extends StatelessWidget {
                   if(transactions.hasError) {
                     return Text("Error");
                   }
-
 
                   return CircularProgressIndicator();
                 },
@@ -101,7 +100,7 @@ class BoxInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       height: 220,
       decoration: BoxDecoration(
           gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
@@ -111,7 +110,7 @@ class BoxInfo extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("FATURA ABERTA", style: TextStyle(color: Colors.white.withAlpha(90), fontWeight: FontWeight.bold, fontSize: 22) ),
